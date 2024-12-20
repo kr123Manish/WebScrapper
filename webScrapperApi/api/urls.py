@@ -1,8 +1,10 @@
-from api import views
+from api.screenerEndpoints import screenEndpoints
+from api.nseEndpoints import nseEndpoints
 from django.urls import path
 
 urlpatterns = [
    
-    path('api/', views.ApiIsRunning),
-    path('api/data', views.Getdata)
+    path('api/', screenEndpoints.ApiIsRunning),
+    path('api/screener/data', screenEndpoints.Getdata),
+    path('api/nse/data', nseEndpoints.Getdata)
 ]

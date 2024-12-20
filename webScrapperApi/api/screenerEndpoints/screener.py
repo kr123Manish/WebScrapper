@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup as bs
 import requests
 
 
-class WebScrapper:
+class Screener:
 
     def __init__(self, cpname):
         self.companyName = cpname
@@ -74,5 +74,40 @@ class WebScrapper:
                 cons_list.append(i.get_text(strip=True))
             return [ pros_list , cons_list]
 
+        except AttributeError as e:
+            return f"Error parsing titles: {e}"
+        
+    
+    def profitLoss(self):
+        try:
+            profit_loss_data = self.soup.find(id="profit-loss")
+            profit_loss_data_th  = profit_loss_data.find_all('th',class_=True)
+
+            year_list = []
+            for year in profit_loss_data_th:
+                year_list.append(year.get_text(strip=True))
+
+
+            x = profit_loss_data.find_all('tbody')
+            tbody = x[0]  # Or replace with the correct parent containing the <tbody>
+            data_dict = {}
+
+            # Find all rows (<tr> elements)
+            rows = tbody.find_all('tr')
+
+            # Process each row
+            for row in rows:
+                # Find the key (first <td> with class="text")
+                key_td = row.find('td', class_='text')
+                if key_td:
+                    key = key_td.get_text(strip=True)  # Extract key as text
+                    
+                    # Find the other <td> elements for values
+                    values = [td.get_text(strip=True) for td in row.find_all('td')[1:]]  # Skip the first <td>
+                    
+                    # Add key-value pair to dictionary
+                    data_dict[key] = values
+
+            return [year_list[1:],data_dict]
         except AttributeError as e:
             return f"Error parsing titles: {e}"

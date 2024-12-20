@@ -1,5 +1,5 @@
 from django.http.response import JsonResponse
-from api import program as p  # Import your WebScrapper class
+from api.screenerEndpoints import screener as p  
 
 
 def ApiIsRunning(request):
@@ -13,7 +13,7 @@ def Getdata(request):
 
     try:
         
-        obj = p.WebScrapper(company_name)
+        obj = p.Screener(company_name)
 
         
         status = obj.getStatus()
@@ -44,16 +44,27 @@ def Getdata(request):
             pros = f"Error fetching pros: {str(e)}"
             cons = f"Error fetching cons: {str(e)}"
 
+        try:
+            profitLoss = obj.profitLoss()
+            years = profitLoss[0]
+            numeric_data = profitLoss[1]
+        except Exception as e:
+            years = f"Error fetching pros: {str(e)}"
+            numeric_data = f"Error fetching cons: {str(e)}"
+
         
         data = {
             "status": status,
-            "titles": titles,
             "aboutSection": about_section,
             "topRatios": top_ratios,
             "analysis": {
                 "pros": pros,
                 "cons": cons
             },
+            "profitLoss":{
+                    'years':years,
+                    'numeric_data':numeric_data},
+            "titles": titles
         }
 
         return JsonResponse(data)

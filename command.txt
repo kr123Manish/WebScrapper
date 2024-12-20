@@ -1,0 +1,12 @@
+django-admin startproject mysite djangotutorial
+python manage.py runserver
+
+
+
+# generate the schema and generate initial file
+python manage.py makemigrations appname
+
+# create table in sql db
+python manage.py migrate
+
+celery -A tasks worker --loglevel=INFO
