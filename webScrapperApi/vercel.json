@@ -12,16 +12,3 @@
     ]
 }
 
-// file edited
-
-// vercel.json added
-
-// pip freeze > requirements.txt
-
-
-// ----------- wsgi.py -----------
-// app =  application
-
-
-// ----------- setting.py ------------
-// ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app']
